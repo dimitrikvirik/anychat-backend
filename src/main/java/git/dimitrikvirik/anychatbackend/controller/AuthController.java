@@ -2,6 +2,7 @@ package git.dimitrikvirik.anychatbackend.controller;
 
 
 import git.dimitrikvirik.anychatbackend.facade.AuthFacade;
+import git.dimitrikvirik.anychatbackend.model.dto.TokenDTO;
 import git.dimitrikvirik.anychatbackend.model.param.LoginParam;
 import git.dimitrikvirik.anychatbackend.model.param.ReLoginParam;
 import git.dimitrikvirik.anychatbackend.model.param.RegisterParam;
@@ -23,12 +24,12 @@ public class AuthController {
     private final AuthFacade authFacade;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody @Valid RegisterParam registerParam){
+    public ResponseEntity<TokenDTO> register(@RequestBody @Valid RegisterParam registerParam){
       return new ResponseEntity<>(authFacade.register(registerParam),HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid LoginParam loginParam){
+    public ResponseEntity<TokenDTO> login(@RequestBody @Valid LoginParam loginParam){
       return new ResponseEntity<>(authFacade.login(loginParam), HttpStatus.OK);
     }
 

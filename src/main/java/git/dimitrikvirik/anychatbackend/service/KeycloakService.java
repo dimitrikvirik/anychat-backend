@@ -6,6 +6,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import git.dimitrikvirik.anychatbackend.config.KeycloakClient;
+import git.dimitrikvirik.anychatbackend.model.dto.TokenDTO;
 import git.dimitrikvirik.anychatbackend.model.enums.KeycloakRole;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.Keycloak;
@@ -156,6 +157,7 @@ public class KeycloakService {
 
         return Unirest.post(tokenUri)
                 .header("Content-Type", "application/x-www-form-urlencoded")
+                .header("Content-Type", "application/json")
                 .field("username", username)
                 .field("password", password)
                 .field("client_id", clientId)

@@ -16,12 +16,11 @@ public class Message {
     private Long id;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Chat chat;
 
     @Column(name = "text")
     private String text;
-
 
     @ManyToOne
     private UserAccount user;

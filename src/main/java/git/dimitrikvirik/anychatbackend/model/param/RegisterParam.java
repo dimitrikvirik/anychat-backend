@@ -14,14 +14,13 @@ public class RegisterParam {
 
     @Length(min = 3, max = 30)
     @NotBlank
-    private String Username;
-
+    private String username;
 
     @ValidEmail
     @NotBlank
-    private String Email;
+    private String email;
 
     @Length(min = 8, max = 20)
     @NotBlank
-    private String Password;
+    private String password;
 }
