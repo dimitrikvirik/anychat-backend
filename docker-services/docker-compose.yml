@@ -1,0 +1,28 @@
+version: "3.5"
+
+
+services:
+  postgres:
+    image: postgres:12
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: sweeft
+      POSTGRES_USER: sweeft
+      POSTGRES_DB: sweeft
+  keycloak:
+    image: quay.io/keycloak/keycloak:14.0.0
+    container_name: keycloak
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: sweeft
+      DB_USER: sweeft
+      DB_SCHEMA: public
+      DB_PASSWORD: sweeft
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    ports:
+      - 8081:8080
+    depends_on:
+      - postgres
