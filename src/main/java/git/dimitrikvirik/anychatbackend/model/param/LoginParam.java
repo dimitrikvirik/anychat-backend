@@ -13,11 +13,11 @@ public class LoginParam {
 
     @NotBlank
     @Length(min = 3, max = 30)
-    private String Username;
+    private String username;
 
     @NotBlank
     @Length(min = 8, max = 20)
-    private String Password;
+    private String password;
 
     @NotNull
     private Boolean rememberMe = false;
