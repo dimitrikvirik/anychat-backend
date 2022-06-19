@@ -27,16 +27,16 @@ public class ChatService {
         return messageRepository.findAllByChatId(chatId, PageRequest.of(page, size, Sort.Direction.DESC, "createdAt"));
     }
 
-    public Message saveMessage(Long id, MessageParam messageParam, String name) {
+    public Message saveMessage(Long id, String messageText, String username) {
 
         Chat chat = chatRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Chat not found"));
 
-        UserAccount user = userService.getByUsername(name).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        UserAccount user = userService.getByUsername(username).orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         Message message = new Message();
         message.setChat(chat);
         message.setUser(user);
-        message.setText(messageParam.getText());
+        message.setText(messageText);
 
        return messageRepository.save(message);
     }

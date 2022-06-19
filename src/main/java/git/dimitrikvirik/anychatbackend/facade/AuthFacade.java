@@ -67,6 +67,8 @@ public class AuthFacade {
             }
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+
             return   objectMapper.readValue(login.getBody(), TokenDTO.class);
         }
         catch (UnirestException e) {
