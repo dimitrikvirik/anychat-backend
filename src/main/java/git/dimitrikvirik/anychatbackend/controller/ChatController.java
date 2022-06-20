@@ -28,7 +28,7 @@ public class ChatController {
 
 
     @GetMapping("/{id}/messages")
-    public ResponseEntity<Page<Message>> getMessages(@PathVariable Long id, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<Page<MessageDTO>> getMessages(@PathVariable Long id, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         return ResponseEntity.ok(chatService.getMessages(id, page, size));
     }
 

@@ -3,6 +3,7 @@ package git.dimitrikvirik.anychatbackend.service;
 import git.dimitrikvirik.anychatbackend.model.domain.Chat;
 import git.dimitrikvirik.anychatbackend.model.domain.Message;
 import git.dimitrikvirik.anychatbackend.model.domain.UserAccount;
+import git.dimitrikvirik.anychatbackend.model.dto.MessageDTO;
 import git.dimitrikvirik.anychatbackend.model.param.MessageParam;
 import git.dimitrikvirik.anychatbackend.repository.ChatRepository;
 import git.dimitrikvirik.anychatbackend.repository.MessageRepository;
@@ -23,8 +24,17 @@ public class ChatService {
     private final UserService userService;
 
 
-    public Page<Message> getMessages(Long chatId, int page, int size) {
-        return messageRepository.findAllByChatId(chatId, PageRequest.of(page, size, Sort.Direction.DESC, "createdAt"));
+    public Page<MessageDTO> getMessages(Long chatId, int page, int size) {
+        return messageRepository.findAllByChatId(chatId, PageRequest.of(page, size, Sort.Direction.DESC, "createdAt")).map(
+                message -> {
+                    MessageDTO messageDTO = new MessageDTO();
+                    messageDTO.setUsername(message.getUser().getUsername());
+                    messageDTO.setText(message.getText());
+                    messageDTO.setProfile(message.getUser().getPhoto());
+                    messageDTO.setCreatedAt(message.getCreatedAt().toString());
+                    return messageDTO;
+                }
+        );
     }
 
     public Message saveMessage(Long id, String messageText, String username) {
