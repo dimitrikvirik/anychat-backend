@@ -1,7 +1,6 @@
 package git.dimitrikvirik.anychatbackend.config;
 
 
-import de.codecentric.boot.admin.server.web.client.HttpHeadersProvider;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.keycloak.adapters.KeycloakConfigResolver;
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
@@ -12,7 +11,6 @@ import org.keycloak.admin.client.KeycloakBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 
@@ -28,15 +26,7 @@ public class KeycloakConfig {
     @Value("${auth.admin.password}")
     private String password;
 
-    @Bean
-    public HttpHeadersProvider keycloakBearerAuthHeaderProvider(Keycloak keycloak) {
-        return (app) -> {
-            String accessToken = keycloak.tokenManager().getAccessTokenString();
-            HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
-            return headers;
-        };
-    }
+
     @Bean
     public Keycloak keycloak() {
         return KeycloakBuilder

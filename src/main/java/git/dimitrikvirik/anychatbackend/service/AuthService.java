@@ -1,10 +1,14 @@
 package git.dimitrikvirik.anychatbackend.service;
 
 
+import git.dimitrikvirik.anychatbackend.model.domain.Code;
 import git.dimitrikvirik.anychatbackend.model.domain.UserAccount;
+import git.dimitrikvirik.anychatbackend.repository.CodeRepository;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -14,6 +18,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.annotation.PostConstruct;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +29,10 @@ public class AuthService {
 
     private final KeycloakService keycloakService;
     private final UserService userService;
+
+    private final CodeRepository codeRepository;
+
+    private final JavaMailSender javaMailSender;
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public long getLoggedUserId() {
@@ -32,8 +44,9 @@ public class AuthService {
                         "please contact to administrator!");
         return database_id;
     }
-    public boolean sameUsername(String username){
-     return getLoggedUserAccount().getUsername().equals(username);
+
+    public boolean sameUsername(String username) {
+        return getLoggedUserAccount().getUsername().equals(username);
     }
 
 
@@ -76,5 +89,33 @@ public class AuthService {
     public String getKeycloakId() {
         JwtAuthenticationToken jwt = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         return jwt.getName();
+    }
+
+
+
+    public Code resetPasswordCode(String email) {
+
+        //random 6 digit code
+        String code = String.valueOf(Math.random()).substring(2, 8);
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        try {
+            helper.setFrom("dimitrikvirik@gmail.com");
+            helper.setTo(email);
+            helper.setSubject("Reset password code");
+            helper.setText("Your code is: " + code);
+        javaMailSender.send(message);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+        Code codeEntity = new Code();
+        codeEntity.setEmail(email);
+        codeEntity.setCode(code);
+        return codeRepository.save(codeEntity);
+    }
+
+    public boolean checkCode(String email, String code) {
+        return codeRepository.existsByEmailAndCode(email, code);
     }
 }

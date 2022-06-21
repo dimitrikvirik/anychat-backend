@@ -2,10 +2,9 @@ package git.dimitrikvirik.anychatbackend.controller;
 
 
 import git.dimitrikvirik.anychatbackend.facade.AuthFacade;
+import git.dimitrikvirik.anychatbackend.model.dto.CodeDTO;
 import git.dimitrikvirik.anychatbackend.model.dto.TokenDTO;
-import git.dimitrikvirik.anychatbackend.model.param.LoginParam;
-import git.dimitrikvirik.anychatbackend.model.param.ReLoginParam;
-import git.dimitrikvirik.anychatbackend.model.param.RegisterParam;
+import git.dimitrikvirik.anychatbackend.model.param.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +30,18 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<TokenDTO> login(@RequestBody @Valid LoginParam loginParam){
       return new ResponseEntity<>(authFacade.login(loginParam), HttpStatus.OK);
+    }
+
+    @PostMapping("/reset-password-code")
+    public ResponseEntity<Void> resetPasswordCode(@RequestBody @Valid ResetPasswordCodeParam resetPasswordCodeParam){
+         authFacade.resetPasswordCOde(resetPasswordCodeParam);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<Void> resetPassword(@RequestBody @Valid ResetPasswordParam resetPasswordParam) {
+        authFacade.resetPassword(resetPasswordParam);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/re-login")

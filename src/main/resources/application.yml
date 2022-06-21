@@ -26,6 +26,12 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${KEYCLOAK_HOST}/auth/realms/${REALM}
+  mail:
+    host: in-v3.mailjet.com
+    port: 587
+    username: 83a8d2608ef154185cca110eac234f73
+    protocol: smtp
+    password: dca4d4c34d0212b0d6d241cc745d598e
 keycloak:
   realm: ${REALM}
   auth-server-url: ${KEYCLOAK_HOST}/auth
@@ -38,6 +44,4 @@ auth:
 common:
   keycloak:
     token-uri: ${KEYCLOAK_HOST}/auth/realms/${REALM}/protocol/openid-connect/token
-
-
 

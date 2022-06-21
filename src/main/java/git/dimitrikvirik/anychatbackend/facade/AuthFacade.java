@@ -2,25 +2,27 @@ package git.dimitrikvirik.anychatbackend.facade;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+import git.dimitrikvirik.anychatbackend.model.domain.Code;
 import git.dimitrikvirik.anychatbackend.model.domain.UserAccount;
+import git.dimitrikvirik.anychatbackend.model.dto.CodeDTO;
 import git.dimitrikvirik.anychatbackend.model.dto.TokenDTO;
 import git.dimitrikvirik.anychatbackend.model.mapper.KeycloakMapper;
-import git.dimitrikvirik.anychatbackend.model.param.LoginParam;
-import git.dimitrikvirik.anychatbackend.model.param.ReLoginParam;
-import git.dimitrikvirik.anychatbackend.model.param.RegisterParam;
+import git.dimitrikvirik.anychatbackend.model.param.*;
 import git.dimitrikvirik.anychatbackend.service.AuthService;
 import git.dimitrikvirik.anychatbackend.service.KeycloakService;
 import git.dimitrikvirik.anychatbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +31,8 @@ public class AuthFacade {
     private final AuthService authService;
     private final UserService userService;
     private final KeycloakService keycloakService;
+
+
 
 
 
@@ -94,5 +98,30 @@ public class AuthFacade {
     public Void logout() {
         authService.logout(authService.getSessionId());
         return null;
+    }
+
+    public void resetPasswordCOde(ResetPasswordCodeParam resetPasswordCodeParam) {
+        Optional<UserAccount> userAccount = userService.getByEmail(resetPasswordCodeParam.getEmail());
+        if(userAccount.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with this email does not exist!");
+        }
+
+
+        authService.resetPasswordCode(resetPasswordCodeParam.getEmail());
+    }
+
+    public void resetPassword(ResetPasswordParam resetPasswordParam){
+        if(authService.checkCode(resetPasswordParam.getEmail() ,resetPasswordParam.getCode())){
+            UserAccount userAccount = userService.getByEmail(resetPasswordParam.getEmail()).orElseThrow();
+            String keycloakId = userAccount.getKeycloakId();
+            CredentialRepresentation credentialRepresentation = new CredentialRepresentation();
+            credentialRepresentation.setType(CredentialRepresentation.PASSWORD);
+            credentialRepresentation.setValue(resetPasswordParam.getPassword());
+            keycloakService.resetPassword(keycloakId, credentialRepresentation);
+        }
+        else{
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong code!");
+        }
+
     }
 }
