@@ -22,7 +22,6 @@ public class UserController {
     @GetMapping("/{username}")
     public ResponseEntity<UserAccountDTO> getUser(@PathVariable String username){
         UserAccountDTO user = userFacade.getUser(username);
-        System.out.println(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 

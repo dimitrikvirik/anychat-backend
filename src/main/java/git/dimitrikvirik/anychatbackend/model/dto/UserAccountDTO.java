@@ -19,8 +19,8 @@ public class UserAccountDTO {
 
     public static UserAccountDTO from(UserAccount userAccount) {
         UserAccountDTO userAccountDTO = new UserAccountDTO();
-        userAccountDTO.setFirstname(userAccountDTO.getFirstname());
-        userAccountDTO.setLastname(userAccountDTO.getLastname());
+        userAccountDTO.setFirstname(userAccount.getFirstname());
+        userAccountDTO.setLastname(userAccount.getLastname());
         userAccountDTO.setEmail(userAccount.getEmail());
         userAccountDTO.setUsername(userAccount.getUsername());
         userAccountDTO.setAbout(userAccount.getAbout());
