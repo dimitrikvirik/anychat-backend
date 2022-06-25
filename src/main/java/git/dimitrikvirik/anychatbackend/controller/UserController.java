@@ -25,7 +25,6 @@ public class UserController {
     }
 
     @PutMapping("/{username}")
-    @PreAuthorize("@authService.sameUsername(#username)")
     public ResponseEntity<UserAccountDTO> updateUser(@PathVariable String username ,@Valid @RequestBody UserUpdateParam userUpdateParam){
         return new ResponseEntity<>(userFacade.updateUser(username, userUpdateParam), HttpStatus.OK);
     }
