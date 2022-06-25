@@ -23,6 +23,12 @@ public class UserAccount {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
+    @Column(name = "firstname")
+    private String firstname;
+
+    @Column(name = "lastname")
+    private String lastname;
+
     @Column(name ="keycloakId", unique = true )
     private String keycloakId;
 
