@@ -26,7 +26,7 @@ public class UserFacade {
     }
 
     public UserAccountDTO updateUser(String username, UserUpdateParam userUpdateParam) {
-       if( authService.sameUsername(username)){
+       if(!authService.sameUsername(username)){
            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "not same user!");
        }
 
