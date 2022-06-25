@@ -1,6 +1,9 @@
 version: "3.5"
 
 
+networks:
+  ANYCHAT:
+    external: true
 services:
   anychat:
     image: anychat-backend:0.0.1-SNAPSHOT
@@ -8,6 +11,8 @@ services:
       -  8080:8080
     environment:
       SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - ANYCHAT
   postgres:
     image: postgres:12
     ports:
@@ -16,6 +21,8 @@ services:
       POSTGRES_PASSWORD: sweeft
       POSTGRES_USER: sweeft
       POSTGRES_DB: sweeft
+    networks:
+      - ANYCHAT
   keycloak:
     image: quay.io/keycloak/keycloak:14.0.0
     container_name: keycloak
@@ -28,6 +35,8 @@ services:
       DB_PASSWORD: sweeft
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
+    networks:
+      - ANYCHAT
     ports:
       - 8081:8080
     depends_on:

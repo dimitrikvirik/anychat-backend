@@ -107,7 +107,7 @@ public class AuthFacade {
         }
 
 
-        authService.resetPasswordCode(resetPasswordCodeParam.getEmail());
+        authService.resetPasswordCode(resetPasswordCodeParam.getEmail(), userAccount.get().getUsername());
     }
 
     public void resetPassword(ResetPasswordParam resetPasswordParam){
@@ -123,5 +123,12 @@ public class AuthFacade {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong code!");
         }
 
+    }
+
+    public Boolean isUser(String username) {
+      return  userService.getByUsername(username).isPresent();
+    }
+    public Boolean isEmail(String email) {
+        return  userService.getByEmail(email).isPresent();
     }
 }

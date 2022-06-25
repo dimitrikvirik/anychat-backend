@@ -93,18 +93,19 @@ public class AuthService {
 
 
 
-    public Code resetPasswordCode(String email) {
+    public Code resetPasswordCode(String email, String username) {
 
+        codeRepository.deleteAllByEmail(email);
         //random 6 digit code
         String code = String.valueOf(Math.random()).substring(2, 8);
 
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
         try {
-            helper.setFrom("dimitrikvirik@gmail.com");
+            helper.setFrom("test@mrecords.me");
             helper.setTo(email);
             helper.setSubject("Reset password code");
-            helper.setText("Your code is: " + code);
+            helper.setText("Your code for username " + username + "  is: " + code);
         javaMailSender.send(message);
         } catch (MessagingException e) {
             throw new RuntimeException(e);

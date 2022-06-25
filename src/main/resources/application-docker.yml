@@ -1,11 +1,11 @@
 
 POSTGRES_USER: sweeft
 POSTGRES_PASSWORD: sweeft
-POSTGRES_URL: jdbc:postgresql://172.18.0.3:5432/common
+POSTGRES_URL: jdbc:postgresql://172.18.0.2:5432/common
 
 
 REALM: sweeft
-KEYCLOAK_HOST: http://172.18.0.2:8080
+KEYCLOAK_HOST: http://172.18.0.4:8080
 KEYCLOAK_ADMIN_USER: admin
 KEYCLOAK_ADMIN_PASSWORD: admin
 KEYCLOAK_CLIENT: sweeft-api-gateway

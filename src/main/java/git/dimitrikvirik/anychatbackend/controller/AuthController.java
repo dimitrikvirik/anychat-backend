@@ -8,10 +8,7 @@ import git.dimitrikvirik.anychatbackend.model.param.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -21,6 +18,17 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final AuthFacade authFacade;
+
+
+    @GetMapping("/is-user/{username}")
+    public ResponseEntity<Boolean> isUser(@PathVariable String username) {
+        return ResponseEntity.ok(authFacade.isUser(username));
+    }
+
+    @GetMapping("/is-email/{email}")
+    public ResponseEntity<Boolean> isEmail(@PathVariable String email) {
+        return ResponseEntity.ok(authFacade.isEmail(email));
+    }
 
     @PostMapping("/register")
     public ResponseEntity<TokenDTO> register(@RequestBody @Valid RegisterParam registerParam){
