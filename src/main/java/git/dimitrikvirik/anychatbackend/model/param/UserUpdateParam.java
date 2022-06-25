@@ -9,11 +9,11 @@ import javax.validation.constraints.NotBlank;
 public class UserUpdateParam {
 
 
-    private String Firstname;
+    private String firstname;
 
 
-    private String Lastname;
+    private String lastname;
 
-    private String About;
+    private String about;
 
 }
