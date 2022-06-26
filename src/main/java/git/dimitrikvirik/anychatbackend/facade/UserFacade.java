@@ -85,6 +85,7 @@ public class UserFacade {
             userService.save(loggedUserAccount);
 
         } catch (Exception e) {
+            e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
 
