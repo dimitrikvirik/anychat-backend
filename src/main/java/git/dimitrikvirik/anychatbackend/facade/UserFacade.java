@@ -58,9 +58,11 @@ public class UserFacade {
             String profileImage = UUID.randomUUID() + ".jpg";
             BufferedImage imBuff = ImageIO.read(file.getInputStream());
 
+
             UserAccount loggedUserAccount = authService.getLoggedUserAccount();
-            loggedUserAccount.setPhoto(profileImage);
-            ImageIO.write(imBuff, "jpg", new File("photos/" +  profileImage));
+            String profileImagePath = "photos" + "/" + profileImage;
+            loggedUserAccount.setPhoto(profileImagePath);
+            ImageIO.write(imBuff, "jpg", new File(profileImagePath));
             userService.save(loggedUserAccount);
 
         } catch (Exception e) {

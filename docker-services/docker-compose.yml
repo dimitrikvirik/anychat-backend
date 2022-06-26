@@ -6,7 +6,7 @@ networks:
     external: true
 services:
   anychat:
-    image: anychat-backend:0.0.13
+    image: anychat-backend:0.0.14
     ports:
       -  8080:8080
     environment:
