@@ -92,6 +92,7 @@ public class AuthService {
     }
 
 
+    @Transactional
 
     public Code resetPasswordCode(String email, String username) {
 
