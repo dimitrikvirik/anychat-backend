@@ -10,7 +10,7 @@ services:
     ports:
       -  8080:8080
     volumes:
-      - tpm
+      - anychat:/usr/share/anychat/data
     environment:
       SPRING_PROFILES_ACTIVE: docker
     networks:
