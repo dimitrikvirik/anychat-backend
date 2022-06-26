@@ -44,4 +44,4 @@ services:
     depends_on:
       - postgres
 volumes:
-  tmp:
+  anychat:
