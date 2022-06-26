@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -29,6 +30,13 @@ public class UserController {
     public ResponseEntity<UserAccountDTO> updateUser(@PathVariable String username ,@Valid @RequestBody UserUpdateParam userUpdateParam){
         return new ResponseEntity<>(userFacade.updateUser(username, userUpdateParam), HttpStatus.OK);
     }
+
+    @PostMapping("/{username}/photo")
+    public ResponseEntity<String> uploadPhoto(@RequestPart MultipartFile file)
+    {
+        return new ResponseEntity<>(userFacade.uploadPhoto(file), HttpStatus.OK);
+    }
+
 
 
 }
