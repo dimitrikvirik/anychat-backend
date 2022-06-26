@@ -6,9 +6,11 @@ networks:
     external: true
 services:
   anychat:
-    image: anychat-backend:0.0.14
+    image: anychat-backend:0.0.15
     ports:
       -  8080:8080
+    volumes:
+      - tpm
     environment:
       SPRING_PROFILES_ACTIVE: docker
     networks:
@@ -41,3 +43,5 @@ services:
       - 8081:8080
     depends_on:
       - postgres
+volumes:
+  tmp:

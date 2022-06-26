@@ -9,6 +9,8 @@ public class UserAccountDTO {
 
     private String email;
 
+    private String profile;
+
     private String firstname;
 
     private String lastname;
@@ -19,6 +21,7 @@ public class UserAccountDTO {
 
     public static UserAccountDTO from(UserAccount userAccount) {
         UserAccountDTO userAccountDTO = new UserAccountDTO();
+        userAccountDTO.setProfile(userAccount.getPhoto());
         userAccountDTO.setFirstname(userAccount.getFirstname());
         userAccountDTO.setLastname(userAccount.getLastname());
         userAccountDTO.setEmail(userAccount.getEmail());

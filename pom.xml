@@ -10,7 +10,7 @@
     </parent>
     <groupId>git.dimitrikvirik</groupId>
     <artifactId>anychat-backend</artifactId>
-    <version>0.0.14</version>
+    <version>0.0.15</version>
     <name>anychat-backend</name>
     <description>anychat-backend</description>
     <properties>
