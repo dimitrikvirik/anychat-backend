@@ -21,7 +21,7 @@ import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/chat")
+@RequestMapping("/api/chat")
 public class ChatController {
 
     private final ChatService chatService;
