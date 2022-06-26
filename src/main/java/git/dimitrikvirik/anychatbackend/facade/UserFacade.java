@@ -55,33 +55,12 @@ public class UserFacade {
             throw new ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "File is Empty!");
 
         try {
-            String fileExtension = Files.getFileExtension(file.getOriginalFilename());
-            List<String> supportedExtensions = List.of("jpeg", "jpg", "png", "heic");
-
-
-            final String contentType = file.getContentType();
-            if (supportedExtensions.stream().noneMatch((s) -> s.equals(fileExtension))) {
-                throw new ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
-            }
-
             String profileImage = UUID.randomUUID() + ".jpg";
             BufferedImage imBuff = ImageIO.read(file.getInputStream());
 
-            BufferedImage image = Scalr.resize(imBuff, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_EXACT, 500, 500, Scalr.OP_ANTIALIAS);
-            assert contentType != null;
-            if (contentType.equals("image/png")) {
-                BufferedImage result = new BufferedImage(
-                        image.getWidth(),
-                        image.getHeight(),
-                        BufferedImage.TYPE_INT_RGB);
-                result.createGraphics().drawImage(image, 0, 0, Color.WHITE, null);
-                image = result;
-            }
-
             UserAccount loggedUserAccount = authService.getLoggedUserAccount();
-            String profileImagePath = "photos" + "/" + profileImage;
-            loggedUserAccount.setPhoto(profileImagePath);
-            ImageIO.write(image, "jpg", new File(profileImagePath));
+            loggedUserAccount.setPhoto(profileImage);
+            ImageIO.write(imBuff, "jpg", new File("photos/" +  profileImage));
             userService.save(loggedUserAccount);
 
         } catch (Exception e) {

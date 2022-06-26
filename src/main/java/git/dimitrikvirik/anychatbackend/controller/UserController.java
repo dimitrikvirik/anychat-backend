@@ -11,7 +11,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,6 +41,31 @@ public class UserController {
     public ResponseEntity<String> uploadPhoto(@RequestPart MultipartFile file)
     {
         return new ResponseEntity<>(userFacade.uploadPhoto(file), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/photo/{imageid}")
+    public void showImage(@PathVariable String imageid,HttpServletResponse response) throws Exception {
+
+        ByteArrayOutputStream jpegOutputStream = new ByteArrayOutputStream();
+
+        try {
+            BufferedImage image = ImageIO.read(new File("photos/" + imageid));
+            ImageIO.write(image, "jpeg", jpegOutputStream);
+        } catch (IllegalArgumentException e) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+
+        byte[] imgByte = jpegOutputStream.toByteArray();
+
+        response.setHeader("Cache-Control", "no-store");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+        response.setContentType("image/jpeg");
+        ServletOutputStream responseOutputStream = response.getOutputStream();
+        responseOutputStream.write(imgByte);
+        responseOutputStream.flush();
+        responseOutputStream.close();
     }
 
 
