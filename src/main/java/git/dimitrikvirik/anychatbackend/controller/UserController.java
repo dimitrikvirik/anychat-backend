@@ -38,9 +38,11 @@ public class UserController {
     }
 
     @PostMapping("/photo")
-    public ResponseEntity<String> uploadPhoto(@RequestPart MultipartFile file)
+    public ResponseEntity<Void> uploadPhoto(@RequestPart MultipartFile file)
     {
-        return new ResponseEntity<>(userFacade.uploadPhoto(file), HttpStatus.OK);
+        userFacade.uploadPhoto(file);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

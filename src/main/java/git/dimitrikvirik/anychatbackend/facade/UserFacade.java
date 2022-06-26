@@ -50,7 +50,7 @@ public class UserFacade {
         return UserAccountDTO.from(userAccount);
     }
 
-    public String uploadPhoto(MultipartFile file) {
+    public void uploadPhoto(MultipartFile file) {
         if (file.isEmpty())
             throw new ResponseStatusException(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "File is Empty!");
 
@@ -70,7 +70,6 @@ public class UserFacade {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
 
-        return null;
 
     }
 }
