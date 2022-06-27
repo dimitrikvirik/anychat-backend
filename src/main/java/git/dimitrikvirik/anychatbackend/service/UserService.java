@@ -43,6 +43,12 @@ public class UserService {
         return userAccountRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with id %s not found", id)));
     }
 
+    @Transactional
+    public UserAccount getByKeycloakId(String keycloakId){
+        return userAccountRepository.findByKeycloakId(keycloakId).orElseThrow(
+                () -> new RuntimeException("User not found by keycloak!")
+        );
+    }
 
 
 }

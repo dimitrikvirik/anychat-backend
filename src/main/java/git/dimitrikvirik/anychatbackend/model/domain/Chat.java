@@ -2,8 +2,11 @@ package git.dimitrikvirik.anychatbackend.model.domain;
 
 
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -19,5 +22,9 @@ public class Chat {
 
     @ManyToOne
     private UserAccount owner;
+
+    @ManyToMany
+   @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private List<UserAccount> onlineUsers = new ArrayList<>();
 
 }

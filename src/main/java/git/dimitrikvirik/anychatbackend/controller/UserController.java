@@ -54,7 +54,7 @@ public class UserController {
         try {
             BufferedImage image = ImageIO.read(new File("photos/" + imageid));
             ImageIO.write(image, "jpeg", jpegOutputStream);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
 

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -49,5 +50,33 @@ public class ChatService {
         message.setText(messageText);
 
        return messageRepository.save(message);
+    }
+
+    @Transactional
+    public long addOnlineUser(Long id ,String keycloakId){
+        UserAccount userAccount = userService.getByKeycloakId(keycloakId);
+        Chat chat = chatRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Chat not found"));
+        if(chat.getOnlineUsers().stream().filter(u -> u.getKeycloakId().equals(keycloakId)).findAny().isEmpty()) {
+            chat.getOnlineUsers().add(userAccount);
+            chatRepository.save(chat);
+            System.out.println("Online now : " + chat.getOnlineUsers().size());
+        }
+        return chat.getOnlineUsers().size();
+
+    }
+
+    @Transactional
+    public long removeOnlineUser(long id, String keycloakId) {
+
+        Chat chat = chatRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Chat not found"));
+        chat.getOnlineUsers().removeIf(u -> u.getKeycloakId().equals(keycloakId));
+        chatRepository.save(chat);
+        System.out.println("Online now : "  + chat.getOnlineUsers().size());
+        return chat.getOnlineUsers().size();
+    }
+
+    public int getOnline(Long id) {
+        Chat chat = chatRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Chat not found"));
+        return chat.getOnlineUsers().size();
     }
 }
